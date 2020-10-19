@@ -39,7 +39,16 @@ func (t SlackResponse) Err() error {
 		return nil
 	}
 
-	return errors.New(t.Error)
+	return &SlackErrorResponse{&t}
+}
+
+// SlackErrorResponse represents a generic error response.
+type SlackErrorResponse struct {
+	*SlackResponse
+}
+
+func (s *SlackErrorResponse) Error() string {
+	return s.SlackResponse.Error
 }
 
 // StatusCodeError represents an http response error.
